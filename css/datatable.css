@@ -1,27 +1,24 @@
-@CHARSET "UTF-8";
 
 .datatable-container {
-	margin: 5px 0;
+	margin:5px 0;
 	width:100%;
 	position:relative;
-	box-sizing: border-box
+	box-sizing:border-box
 }
 .datatable-container * {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-	list-style: none;
-	font-family:"微软雅黑";
-	outline: none
+	box-sizing:border-box
 }
 .datatable-container .datatable {
 	width:100%;
-	border-collapse: collapse
+	border-collapse:collapse
+}
+.datatable-container .datatable tr:hover {
+    background:#f6f6f6
 }
 .datatable-container .datatable th,
 .datatable-container .datatable td {
 	font-weight:normal;
-	padding:10px;
+	padding:8px;
 	text-align:left;
 	border:1px solid #e2e2e2
 }
@@ -53,13 +50,13 @@
 }
 .datatable-container .pfooter .down-group > .selected:hover {
 	background:#f6f6f6;
-	border:1px solid c9c9c9
+	border:1px solid #c9c9c9
 }
 .datatable-container .pfooter .down-group > .selected:active {
-	background: -webkit-linear-gradient(#e3e3e3, #f6f6f6);
-	background: -o-linear-gradient(#e3e3e3, #f6f6f6);
-	background: -moz-linear-gradient(#e3e3e3, #f6f6f6);
-	background: linear-gradient(#e3e3e3, #f6f6f6)
+	background:-webkit-linear-gradient(#e3e3e3, #f6f6f6);
+	background:-o-linear-gradient(#e3e3e3, #f6f6f6);
+	background:-moz-linear-gradient(#e3e3e3, #f6f6f6);
+	background:linear-gradient(#e3e3e3, #f6f6f6)
 }
 .datatable-container .pfooter .down-group > .selected > i {
 	width:0;
@@ -83,6 +80,7 @@
 	border-bottom:none
 }
 .datatable-container .pfooter .down-group .dropdown {
+	margin:0;
 	position:absolute;
 	left:0;
 	top:102%;
@@ -105,44 +103,45 @@
 	border-bottom:none
 }
 
-.datatable-container .pfooter .pagination > span {
+.datatable-container .pfooter .dt-pagination > span {
 	display:inline-block;
 	margin:0 10px
 }
-.datatable-container .pfooter .pagination > span > i{
+.datatable-container .pfooter .dt-pagination > span > i{
 	margin:0 3px;
 	font-style:normal
 }
-.datatable-container .pfooter .pagination > ul {
-	display:inline-block
+.datatable-container .pfooter .dt-pagination > ul {
+	display:inline-block;
+    overflow:visible
 }
-.datatable-container .pfooter .pagination > ul > li {
+.datatable-container .pfooter .dt-pagination > ul > li {
 	display:inline-block;
 	padding:5px 10px;
 	border:1px solid #e2e2e2;
 	cursor:pointer
 }
-.datatable-container .pfooter .pagination > ul > li:hover,
-.datatable-container .pfooter .pagination > ul > li.active {
+.datatable-container .pfooter .dt-pagination > ul > li:hover,
+.datatable-container .pfooter .dt-pagination > ul > li.active {
 	background:#007aff;
 	color:white;
 	border:1px solid #007aff
 }
-.datatable-container .pfooter .pagination > ul > li.active {
+.datatable-container .pfooter .dt-pagination > ul > li.active {
 	cursor:default
 }
-.datatable-container .pfooter .pagination > ul > li.disabled {
+.datatable-container .pfooter .dt-pagination > ul > li.disabled {
 	border:1px solid #f2f2f2;
 	color:#c1c1c1;
 	background:white;
 	cursor:not-allowed
 }
-.datatable-container .pfooter .pagination > ul > li.leaveout {
+.datatable-container .pfooter .dt-pagination > ul > li.leaveout {
 	border:none;
 	letter-spacing:1px;
 	cursor:default
 }
-.datatable-container .pfooter .pagination > ul > li.leaveout:hover {
+.datatable-container .pfooter .dt-pagination > ul > li.leaveout:hover {
 	background:white;
 	color:black;
 	border:none
@@ -160,20 +159,22 @@
 	background-color:rgba(122,122,122,0.2);
 	background-image:url(load.gif);
 	background-repeat:no-repeat;
-	background-size:50px 50px;
 	background-position:center center
 }
-.datatable-container .datatable .checkbox {
+.datatable-container .checkbox {
 	width:20px;
 	height:15px;
+	min-height:15px;
+	margin:0;
 	display:inline-block;
 	vertical-align:middle;
 	cursor:pointer;
 	background:url(checkbox.png) 0 0 no-repeat
 }
-.datatable-container .datatable .checkbox.checked {
+.datatable-container .checkbox.checked {
 	background-position:-25px 0
 }
 .datatable-container .datatable tr.selected {
 	background:#e8eef6;
 }
+

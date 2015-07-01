@@ -9,17 +9,15 @@
 			url: 'undefined',				// URL接口
 			searchKeys: {},					// 默认检索条件
 			check: true,					// 是否添加复选框
-			thead: true,					// 是否使用后台thead
 			pagination: {					// 分页配置
 				pageSize: 10,
 				currentPage: 1,
 				pageGroup: [5,10,25,50],
-				pageTemplate: '<div class="footer-left"><span>每页显示：</span><div class="down-group"><button type="button" class="selected"><span></span><i class="to-down"></i></button><ul class="dropdown"></ul></div></div><div class="footer-right pagination"><span>总共<i></i>条</span><ul><li class="prev">上一页</li><li class="next">下一页</li></ul></div>',
+				pageTemplate: '<div class="footer-left"><span>每页显示：</span><div class="down-group"><button type="button" class="selected"><span></span><i class="to-down"></i></button><ul class="dropdown"></ul></div></div><div class="footer-right dt-pagination"><span>总共<i></i>条</span><ul><li class="prev">上一页</li><li class="next">下一页</li></ul></div>',
 				complete: function(){},
 				bindEvent: function(){}
 			},
 			ajaxOptions: {					// ajax请求配置
-				timeout: 6000,
 				async: true,
 				type: 'post',
 				dataType: 'json',
@@ -44,13 +42,13 @@
 		})
 		$.extend(true, _opts, this.searchKeys)
 		
-		this.pull(this.url, _opts)
+		this.pull(this.url, _opts, true)
 	}
 	
 	/**
 	 * 远程请求数据
 	 */
-	DataTable.prototype.pull = function(url, opts){
+	DataTable.prototype.pull = function(url, opts, isInit){
 		$.ajax({
 			url: url,
 			timeout: opts.timeout,
@@ -62,11 +60,13 @@
 			beforeSend: function(xhr){
 				this.target.find('.cover').remove()
 				this.target.append('<div class="cover"></div>')
+				
+				opts.before && opts.before()
 			},
 			success: function(response, status){
 				this.fill(response)
 				
-				this.pullSuccess && this.pullSuccess(response, this)
+				isInit && this.pullSuccess && this.pullSuccess(response, this)
 			},
 			error: function(xhr, errorMsg, errObj){
 				if(errorMsg === 'timeout'){
@@ -74,11 +74,30 @@
 				} else if(errorMsg === 'parsererror'){
 					alert('解析异常！\n' + errObj.message)
 				} else {
+					console.log(errObj)
 					alert('未知错误！')
 				}
 			},
 			complete: function(xhr, status){
-				this.pullComplete && this.pullComplete(xhr.responseJSON)
+				var _target = this.target
+				_target.find('.pfooter .down-group > .selected').off().on('click', function () {
+                    var height = _target.height()
+                    var pcHeight = _target.parent().height()
+                    if (height >= pcHeight) {
+                        $(this).next('.dropdown').css({
+                            top: 'auto',
+                            bottom: '102%'
+                        })
+                        $(this).find('i').css({
+                            border: '6px solid transparent',
+                            borderBottom: '6px solid #c9c9c9',
+                            marginTop: '-9px'
+                        })
+                    }
+                    $(this).next('.dropdown').show()
+                })
+                
+				isInit && this.pullComplete && this.pullComplete(xhr.responseJSON)
 				
 				this.target.find('.cover').remove()
 			}
@@ -92,15 +111,12 @@
 		var _table = this.target.find('.datatable'),
 			content = data.data
 		
-		if(!content || !content.thead || !content.tbody){
-			table.find('tbody').html('<tr><td>暂无数据！</td></tr>')
+		if(!content){
+			_table.html('<tr><td>暂无数据！</td></tr>')
 			return false
 		}
 		
-		if(this.thead){
-			_table.find('thead').html(content.thead)
-		}
-		_table.find('tbody').html(content.tbody)
+		_table.html(content)
 		
 		if(this.check){
 			_table.find('thead > tr').prepend('<th style="width:50px;text-align:center"><span class="checkbox" id="selectAll"></span></th>')
@@ -110,9 +126,11 @@
 				if($(this).hasClass('checked')){
 					_table.find('.checkbox').removeClass('checked')
 					_table.find('.checkbox').parents('tr').removeClass('selected')
+					$(this).removeClass('checked')
 				} else {
 					_table.find('.checkbox').addClass('checked')
 					_table.find('.checkbox').parents('tr').addClass('selected')
+					$(this).addClass('checked')
 				}
 			})
 			_table.find('tbody .checkbox').off().on('click', function(){
@@ -145,7 +163,7 @@
 		})
 		$.extend(true, _opts.data, this.searchKeys)
 		
-		this.pull(this.url, _opts)
+		this.pull(this.url, _opts, false)
 	}
 	
 	/**
@@ -165,7 +183,7 @@
 			$.extend(true, this.searchKeys, extra)
 		}
 		
-		this.pull(this.url, _opts)
+		this.pull(this.url, _opts, false)
 	}
 	
 	/**
@@ -213,13 +231,13 @@
 		}
 		footer.find('.dropdown').html(htmlString.join(''))
 		
-		footer.find('.pagination > span > i').text(data.total)
+		footer.find('.dt-pagination > span > i').text(data.total)
 		
 		if(currPage === 1){
-			footer.find('.pagination .prev').addClass('disabled')
+			footer.find('.dt-pagination .prev').addClass('disabled')
 		}
 		if(currPage === totalPage){
-			footer.find('.pagination .next').addClass('disabled')
+			footer.find('.dt-pagination .next').addClass('disabled')
 		}
 		for(i=currPage-1;;i--){
 			if(i <= 0){
@@ -247,7 +265,7 @@
 			pageString.push('<li>'+ i + '</li>')
 		}
 		
-		footer.find('.pagination .prev').after(pageString.join(''))
+		footer.find('.dt-pagination .prev').after(pageString.join(''))
 		
 		bindPaginationEvent(footer, table)
 	}
@@ -257,9 +275,6 @@
 	 * 绑定事件
 	 */
 	function bindPaginationEvent(footer, table){
-		footer.find('.down-group .selected').off().on('click', function(){
-			$(this).parent().find('.dropdown').show()
-		})
 		footer.find('.down-group .dropdown > li').off().on('click', function(){
 			var page = $(this).data('page')
 			
@@ -270,7 +285,7 @@
 			table.refresh(true)
 		})
 		
-		table.target.find('.pagination > ul > li').not('.disabled,.active,.leaveout').off().click('click', function(){
+		table.target.find('.dt-pagination > ul > li').not('.disabled,.active,.leaveout').off().click('click', function(){
 			var $this = $(this)
 			if($this.hasClass('prev')){
 				--table.pagination.currentPage
