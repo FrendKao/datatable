@@ -46,4 +46,27 @@ new DataTable(target, opts)
   resfresh：重新加载表格，参数：isFirst(默认false):是否从第一页开始加载
   search：根据关键字重新加载表格，参数：extra:附加查询条件,isSetAsSearchKey:是否设为默认查询条件(默认flase)
   emptySearchKeys：清空查询条件
+接口格式：
+{
+	"successful: "true",
+	"total": 1,
+	"data": "html_string"
+}
+备注：
+我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
+var dt = new DataTable($('#cdDataTable'),{
+	url: '/assets/json/cd_data.json',
+	check: false,
+	ajaxOptions: { type: 'get' },
+	format: function(resp){
+		return {
+			successful: resp.code == 0,
+			total: resp.data.total,
+			data: resp.data.content
+		}
+	},
+	pullComplete: function(){
+		
+	}
+})
 

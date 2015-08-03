@@ -1,10 +1,5 @@
 {
 	"successful": "true",
-	"total": 200,
-	"pageSize": 10,
-	"pageNumber": 1,
-	"data": {
-		"thead": "<tr><th>T1</th><th>T3</th><th>T3</th><th>T4</th></tr>",
-		"tbody": "<tr><td>c1</td><td>c2</td><td>c3</td><td>c4</td></tr><tr><td>c1</td><td>c2</td><td>c3</td><td>c4</td></tr><tr><td>c1</td><td>c2</td><td>c3</td><td>c4</td></tr><tr><td>c1</td><td>c2</td><td>c3</td><td>c4</td></tr><tr><td>c1</td><td>c2</td><td>c3</td><td>c4</td></tr>"
-	}
+	"total": 3,
+	"data": "<thead><tr><th>用户名</th><th>账号</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead><tbody><tr><td>交易员1</td><td>aa@126.com</td><td>交易员</td><td>2015-06-20 12:33</td><td><a href=\"\">编辑</a><a href=\"\">禁用</a><a href=\"\">删除</a></td></tr><tr><td>交易员2</td><td>aa@126.com</td><td>场地销售</td><td>2015-06-20 12:33</td><td><a href=\"\">编辑</a><a href=\"\">禁用</a><a href=\"\">删除</a></td></tr><tr><td>交易员3</td><td>aa@126.com</td><td>需求方</td><td>2015-06-20 12:33</td><td><a href=\"\">编辑</a><a href=\"\">禁用</a><a href=\"\">删除</a></td></tr><tr><td>交易员4</td><td>aa@126.com</td><td>管理员</td><td>2015-06-20 12:33</td><td><a href=\"\">编辑</a><a href=\"\">禁用</a><a href=\"\">删除</a></td></tr><tr><td>交易员5</td><td>aa@126.com</td><td>超级管理员</td><td>2015-06-20 12:33</td><td><a href=\"\">编辑</a><a href=\"\">禁用</a><a href=\"\">删除</a></td></tr></tbody>"
 }

@@ -4,7 +4,7 @@
 
 (function($){
 	var DataTable = function(target, opts){
-		$.extend(true, this, {
+		$.extend(this, {
 			target: target || undefined,	// 表格容器
 			url: 'undefined',				// URL接口
 			searchKeys: {},					// 默认检索条件
@@ -20,6 +20,7 @@
 			ajaxOptions: {					// ajax请求配置
 				async: true,
 				type: 'post',
+				timeout: '10000',
 				dataType: 'json',
 				data: {}
 			},
@@ -40,15 +41,15 @@
 				pageSize: this.pagination.pageSize
 			}
 		})
-		$.extend(true, _opts, this.searchKeys)
+		$.extend(true, _opts.data, this.searchKeys)
 		
-		this.pull(this.url, _opts, true)
+		this.pull(this.url, _opts)
 	}
 	
 	/**
 	 * 远程请求数据
 	 */
-	DataTable.prototype.pull = function(url, opts, isInit){
+	DataTable.prototype.pull = function(url, opts){
 		$.ajax({
 			url: url,
 			timeout: opts.timeout,
@@ -64,9 +65,18 @@
 				opts.before && opts.before()
 			},
 			success: function(response, status){
-				this.fill(response)
+				var data = response
+				if(this.format){
+					data = this.format(response)
+				}
+				if(!data.successful){
+					alert('数据异常！')
+					return false
+				}
 				
-				isInit && this.pullSuccess && this.pullSuccess(response, this)
+				this.fill(data)
+				
+				this.pullSuccess && this.pullSuccess(response, this)
 			},
 			error: function(xhr, errorMsg, errObj){
 				if(errorMsg === 'timeout'){
@@ -75,29 +85,11 @@
 					alert('解析异常！\n' + errObj.message)
 				} else {
 					console.log(errObj)
-					alert('未知错误！')
+					alert('服务器异常！')
 				}
 			},
 			complete: function(xhr, status){
-				var _target = this.target
-				_target.find('.pfooter .down-group > .selected').off().on('click', function () {
-                    var height = _target.height()
-                    var pcHeight = _target.parent().height()
-                    if (height >= pcHeight) {
-                        $(this).next('.dropdown').css({
-                            top: 'auto',
-                            bottom: '102%'
-                        })
-                        $(this).find('i').css({
-                            border: '6px solid transparent',
-                            borderBottom: '6px solid #c9c9c9',
-                            marginTop: '-9px'
-                        })
-                    }
-                    $(this).next('.dropdown').show()
-                })
-                
-				isInit && this.pullComplete && this.pullComplete(xhr.responseJSON)
+				this.pullComplete && this.pullComplete(xhr.responseJSON, this)
 				
 				this.target.find('.cover').remove()
 			}
@@ -111,18 +103,19 @@
 		var _table = this.target.find('.datatable'),
 			content = data.data
 		
-		if(!content){
+		if(!content || data.total === 0){
 			_table.html('<tr><td>暂无数据！</td></tr>')
+			this.target.find('.pfooter').html('')
 			return false
 		}
 		
 		_table.html(content)
 		
 		if(this.check){
-			_table.find('thead > tr').prepend('<th style="width:50px;text-align:center"><span class="checkbox" id="selectAll"></span></th>')
+			_table.find('thead > tr').prepend('<th style="width:50px;text-align:center"><span class="checkbox" id="DTSelectAll"></span></th>')
 			_table.find('tbody tr').prepend('<td style="text-align:center"><span class="checkbox" name="DTCheckbox"></span></td>')
 			
-			$("#selectAll").off().on('click', function(){
+			$("#DTSelectAll").off().on('click', function(){
 				if($(this).hasClass('checked')){
 					_table.find('.checkbox').removeClass('checked')
 					_table.find('.checkbox').parents('tr').removeClass('selected')
@@ -163,13 +156,14 @@
 		})
 		$.extend(true, _opts.data, this.searchKeys)
 		
-		this.pull(this.url, _opts, false)
+		this.pull(this.url, _opts)
 	}
 	
 	/**
 	 * 根据关键字重新加载表格
 	 */
 	DataTable.prototype.search = function(extra, isSetAsSearchKey){
+		this.pagination.currentPage = 1
 		var _opts = $.extend(true, this.ajaxOptions, {
 			data: {
 				page: 1,
@@ -183,22 +177,45 @@
 			$.extend(true, this.searchKeys, extra)
 		}
 		
-		this.pull(this.url, _opts, false)
+		this.pull(this.url, _opts)
 	}
 	
 	/**
 	 * 配置分页
 	 */
 	DataTable.prototype.paginate = function(data){
-		var footer = this.target.find('.pfooter')
+		var _this = this
+		var footer = _this.target.find('.pfooter')
 		
-		footer.html(this.pagination.pageTemplate)
+		footer.html(_this.pagination.pageTemplate)
 		
 		// 默认分页事件
-		renderPagination(footer, this, data)
+		renderPagination(footer, _this, data)
 		
-		this.pagination.complete && this.pagination.complete(this, data)
-		this.pagination.bindEvent && this.pagination.bindEvent(this, data)
+		footer.find('.down-group > .selected').off().on('click', function () {
+            var _target = _this.target
+            if($(this).next('.dropdown').css('display') == 'block'){
+            	$(this).next('.dropdown').hide();
+            	return false
+            }
+			var height = _target.height()
+            var pcHeight = _target.parent().height()
+            if (height >= pcHeight) {
+                $(this).next('.dropdown').css({
+                    top: 'auto',
+                    bottom: '102%'
+                })
+                $(this).find('i').css({
+                    border: '6px solid transparent',
+                    borderBottom: '6px solid #c9c9c9',
+                    marginTop: '-9px'
+                })
+            }
+            $(this).next('.dropdown').show()
+        })
+		
+		_this.pagination.complete && _this.pagination.complete(_this, data)
+		_this.pagination.bindEvent && _this.pagination.bindEvent(_this, data)
 	}
 	
 	/**
@@ -298,5 +315,11 @@
 		})
 	}
 	
+	if(typeof define === 'function' && define.amd){
+		define(['jquery'], function($){
+			return DataTable;
+		});
+		return false;
+	}
 	window.DataTable = DataTable
 })(jQuery)

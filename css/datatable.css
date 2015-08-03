@@ -2,6 +2,7 @@
 .datatable-container {
 	margin:5px 0;
 	width:100%;
+	min-height:60px;
 	position:relative;
 	box-sizing:border-box
 }
@@ -175,6 +176,6 @@
 	background-position:-25px 0
 }
 .datatable-container .datatable tr.selected {
-	background:#e8eef6;
+	background:#e8eef6
 }
 
