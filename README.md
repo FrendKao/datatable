@@ -55,15 +55,16 @@ new DataTable(target, opts)
   * emptySearchKeys：清空查询条件
 
 ####接口格式：
-```javascript
+`
 {
 	"successful: "true",
 	"total": 1,
 	"data": "html_string"
 }
-```
+`
 ####备注：
 >我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
+
 ```javascript
 var dt = new DataTable($('#cdDataTable'),{
 	url: '/assets/json/cd_data.json',
