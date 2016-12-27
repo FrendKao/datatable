@@ -3,13 +3,13 @@
 ###基于jquery的表格操作控件
 
 1. HTML基本结构：
->
+`
   <div class="datatable-container" id="example-datatable">
   	<table class="datatable label-table"></table>
   	<div class="pfooter"></div>
   	<div class="clear"></div>
   </div>
-
+`
 2. 引入文件：
   <link href="datatable/css/datatable.css" type="text/css" rel="stylesheet">
   <script type="text/javascript" src="datatable/js/datatable.js"></script>
