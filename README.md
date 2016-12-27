@@ -43,9 +43,9 @@ new DataTable(target, opts)
 	pullSuccess：function,数据请求成功后回调，参数(response, this)
 	pullComplete：function,渲染完成后回调，参数(jsonObj)
 5. 方法：
-  resfresh：重新加载表格，参数：isFirst(默认false):是否从第一页开始加载
-  search：根据关键字重新加载表格，参数：extra:附加查询条件,isSetAsSearchKey:是否设为默认查询条件(默认flase)
-  emptySearchKeys：清空查询条件
+  *resfresh：重新加载表格，参数：isFirst(默认false):是否从第一页开始加载
+  *search：根据关键字重新加载表格，参数：extra:附加查询条件,isSetAsSearchKey:是否设为默认查询条件(默认flase)
+  *emptySearchKeys：清空查询条件
 6. 接口格式：
 {
 	"successful: "true",
