@@ -25,7 +25,7 @@
   })
 	
 4. 参数/方法说明：
-
+>
 new DataTable(target, opts)
   target：jquery object,表格容器
   opts：object,设置参数
@@ -42,18 +42,17 @@ new DataTable(target, opts)
 	ajaxOptions：object,jquery ajax配置，默认请求方式post
 	pullSuccess：function,数据请求成功后回调，参数(response, this)
 	pullComplete：function,渲染完成后回调，参数(jsonObj)
-方法：
+5. 方法：
   resfresh：重新加载表格，参数：isFirst(默认false):是否从第一页开始加载
   search：根据关键字重新加载表格，参数：extra:附加查询条件,isSetAsSearchKey:是否设为默认查询条件(默认flase)
   emptySearchKeys：清空查询条件
-接口格式：
+6. 接口格式：
 {
 	"successful: "true",
 	"total": 1,
 	"data": "html_string"
 }
-备注：
-我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
+>备注：我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
 var dt = new DataTable($('#cdDataTable'),{
 	url: '/assets/json/cd_data.json',
 	check: false,
