@@ -2,16 +2,16 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>定制化表单控件</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="utf-8">
+  <title>定制化表单控件</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 	<link href="css/datatable.min.css" type="text/css" rel="stylesheet">
 	
 	<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="js/datatable.js"></script>
+  <script type="text/javascript" src="js/datatable.js"></script>
 </head>
 
 <body>
@@ -20,14 +20,14 @@
 		<div class="pfooter"></div>
 		<div class="clear"></div>
 	</div>
-	
+
 	<script type="text/javascript" defer async>
-		var dt = new DataTable($("#myDataTable"),{
+		var dt = new DataTable($("#myDataTable"), {
 			url: 'json/data.json',
-			pullComplete: function(){
+			pullComplete: function() {
 				
 			}
-		})
+		});
 	</script>
 </body>
 </html>

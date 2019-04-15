@@ -12,14 +12,14 @@
 </div>
 ```
 
-## 引入文件：
+## 引入文件
 
 ```html
 <link href="datatable/css/datatable.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="datatable/js/datatable.js"></script>
 ```
 
-## 调用方式：
+## 调用方式
 
 ```javascript
 var dt = new DataTable($('#cdLabelDataTable'), {
@@ -32,7 +32,7 @@ var dt = new DataTable($('#cdLabelDataTable'), {
 });
 ```
 
-## 参数/方法说明：
+## 参数/方法说明
 
 ```javascript
 new DataTable(target, opts)
@@ -53,23 +53,23 @@ new DataTable(target, opts)
 		pullComplete：function, 渲染完成后回调，参数(jsonObj)
 ```
 
-## 方法：
+## 方法
 
   * resfresh：重新加载表格，参数：isFirst(默认false):是否从第一页开始加载
   * search：根据关键字重新加载表格，参数：extra:附加查询条件,isSetAsSearchKey:是否设为默认查询条件(默认flase)
   * emptySearchKeys：清空查询条件
 
-## 接口格式：
+## 接口格式
 
 ```json
 {
-	"successful: "true",
+	"successful": true,
 	"total": 1,
 	"data": "html_string"
 }
 ```
 
-> 备注： 我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
+> 备注：我们的后台接口与DataTable.js的要求的接口可能不一致，需要添加：
 
 ```javascript
 var dt = new DataTable($('#cdDataTable'), {
